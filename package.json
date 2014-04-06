@@ -1,0 +1,37 @@
+{
+  "name": "four-word-phrase",
+  "description": "Pseudo-random deterministic generation of phrases from a dictionary.",
+  "keywords": [
+    "phrase",
+    "pseudo-random",
+    "deterministic",
+    "dictionary"
+  ],
+  "version": "0.0.1",
+  "homepage": "https://github.com/exratione/four-word-phrase",
+  "author": "Reason <reason@exratione.com>",
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "dependencies": {
+    "async": "0.x.x",
+    "lru-cache": "2.x.x",
+    "seedrandom": "2.x.x",
+    "underscore": "1.x.x"
+  },
+  "devDependencies": {
+    "chai": "1.x.x",
+    "mocha": "1.x.x"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec test/**/*.test.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exratione/four-word-phrase"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/exratione/four-word-phrase/raw/master/LICENSE"
+  }]
+}
