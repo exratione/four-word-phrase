@@ -1,3 +1,9 @@
+# Specific to this project.
+example/projectGutenberg/files
+example/projectGutenberg/www.gutenberg.org
+example/projectGutenberg/zipfileLinks.txt
+example/projectGutenberg/zipfiles
+
 # Sublime Text
 *sublime-*
 
