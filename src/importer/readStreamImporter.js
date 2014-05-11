@@ -35,7 +35,7 @@ util.inherits(ReadStreamImporter, Importer);
  *   // All words failing this regular expression are rejected. Use it to
  *   // control acceptable length and characters. The word is lowercased
  *   // before matching.
- *   acceptanceRegExp: /^[a-z\-]{6,14}$/,
+ *   acceptanceRegExp: /^[a-z\-]{5,14}$/,
  *   // Limit duplicate cache size if memory is a concern. This will let
  *   // duplicates through.
  *   duplicateCacheSize: Infinity

@@ -32,7 +32,7 @@ importer.import({
       return console.error(error);
     }
     phrases.forEach(function (phrase, index) {
-      console.log('Phrase ' + (index + 1) + ': ' + phrase.join(' '));
+      console.info('Phrase ' + (index + 1) + ': ' + phrase.join(' '));
     });
   });
 });

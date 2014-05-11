@@ -4,13 +4,13 @@ Four Word Phrase is a toolkit for the creation of short phrases by
 pseudo-randomly picking words from a provided dictionary. When using a given
 seed and dictionary the sequence of phrases generated is identical.
 
-## Getting Started
-
-Install via NPM:
+## Install via NPM
 
 ```
 npm install four-word-phrase
 ```
+
+## Example: Moby Dick
 
 Generate a dictionary from the text of Moby Dick and use it to create
 pseudo-random phrases:
@@ -44,7 +44,7 @@ importer.import({
       return console.error(error);
     }
     phrases.forEach(function (phrase, index) {
-      console.log('Phrase ' + (index + 1) + ': ' + phrase.join(' '));
+      console.info('Phrase ' + (index + 1) + ': ' + phrase.join(' '));
     });
   });
 });
@@ -55,7 +55,7 @@ importer.import({
 UUIDs have a space of ~10e38 possible options, so there is a vanishing chance of
 collision even if you generate a lot of them. Word sequences that are usefully
 short (meaning short enough to memorize reliably) can't approach that. Four
-words is probably the limit there, and this has a far smaller space:
+words is probably the practical limit, and this has a far smaller space:
 
 |                       | 3 words | 4 words | 10 words |
 | --------------------- | ------- | ------- | -------- |
@@ -64,7 +64,7 @@ words is probably the limit there, and this has a far smaller space:
 | Dictionary: 100,000   | ~10e15  | ~10e20  | ~10e50   |
 
 For reference, a dictionary generated from Moby Dick and restricted to words of
-six to fourteen letters has ~11,000 words. The English language as a whole may
+five to fourteen letters has ~14,000 words. The English language as a whole may
 have ~1,000,000 words, but far from all of those are useful for this purpose.
 Sequences of short words are no easier to remember, but are less secure as
 they can be more readily brute-forced.

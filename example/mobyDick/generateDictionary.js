@@ -19,10 +19,10 @@ var dictionaryTransformStream = new fwp.util.DictionaryTransformStream({
   // words as objects.
   objectMode: false,
   // These are the default settings: tokenize on whitespace and a few
-  // punctuation marks and look for fairly ordinary words between 6 and 14
+  // punctuation marks and look for fairly ordinary words between 5 and 14
   // characters long.
   wordDelimiter: /[\s\.,!\?<>]+/,
-  acceptanceRegExp: /^[a-z\-]{6,14}$/,
+  acceptanceRegExp: /^[a-z\-]{5,14}$/,
   rejectionRegExp: /-{2,}|-.*-/,
   // For a text as small as Moby Dick, little reason to manage memory by
   // allowing duplicates past.

@@ -18,7 +18,7 @@ describe('DictionaryTransformStream', function () {
 
   var objectModeOptions = {
     wordDelimiter: /[\s\.,!\?<>]+/,
-    acceptanceRegExp: /^[a-z\-]{6,14}$/,
+    acceptanceRegExp: /^[a-z\-]{5,14}$/,
     rejectionRegExp: /-{2,}|-.*-/,
     duplicateCacheSize: Infinity
   };

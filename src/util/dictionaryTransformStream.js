@@ -33,7 +33,7 @@ var lruCache = require('lru-cache');
  *   // All words failing this regular expression are rejected. Use it to
  *   // control acceptable length and characters. The word is lowercased
  *   // before matching.
- *   acceptanceRegExp: /^[a-z\-]{6,14}$/,
+ *   acceptanceRegExp: /^[a-z\-]{5,14}$/,
  *   // All words matching this regular expression are rejected.
  *   rejectionRegExp: /-{2,}|-.*-/,
  *   // Limit duplicate cache size if memory is a concern. This will let
@@ -56,7 +56,7 @@ function DictionaryTransformStream(options) {
   this.objectMode = options.objectMode;
   // Set up the specifics for splitting up the input and removing duplicates.
   this.wordDelimiter = options.wordDelimiter || /[\s\.,!\?<>]+/;
-  this.acceptanceRegExp = options.acceptanceRegExp || /^[a-z\-]{6,14}$/;
+  this.acceptanceRegExp = options.acceptanceRegExp || /^[a-z\-]{5,14}$/;
   this.rejectionRegExp = options.rejectionRegExp || /-{2,}|-.*-/;
   this.duplicateCacheSize = options.duplicateCacheSize || Infinity;
 
