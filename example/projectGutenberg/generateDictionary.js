@@ -73,8 +73,9 @@ var config = {
     // A large thesaurus.
     'mthesaur.txt'
   ],
-  // How often to write partials? Do so every X files processed.
-  writePartialProgressFilesEvery: 50
+  // How often to write partials? Do so every X files processed. This file
+  // is going to get pretty large, so don't do it too often.
+  writePartialProgressFilesEvery: 500
 };
 
 // --------------------------------------------------------------------------
