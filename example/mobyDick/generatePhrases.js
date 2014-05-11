@@ -7,7 +7,7 @@
 var async = require('async');
 var fs = require('fs');
 var path = require('path');
-var fwp = require('..');
+var fwp = require('../..');
 
 var generator = new fwp.generator.MemoryGenerator({
   baseSeed: 'a random seed'

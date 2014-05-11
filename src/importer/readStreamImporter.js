@@ -31,7 +31,7 @@ util.inherits(ReadStreamImporter, Importer);
  * {
  *   readStream: readStream,
  *   // For tokenizing the stream of words.
- *   wordDelimiter: /[\s!\?]+/,
+ *   wordDelimiter: /[\s\.,!\?<>]+/,
  *   // All words failing this regular expression are rejected. Use it to
  *   // control acceptable length and characters. The word is lowercased
  *   // before matching.

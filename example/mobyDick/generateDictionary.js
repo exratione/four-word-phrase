@@ -5,12 +5,12 @@
 
 var fs = require('fs');
 var path = require('path');
-var fwp = require('..');
+var fwp = require('../..');
 
 var filePath = path.join(__dirname, 'mobyDick.txt');
 var readStream = fs.createReadStream(filePath);
 
-var dictionaryFilePath = path.join(__dirname, 'mobyDickDictionary.txt');
+var dictionaryFilePath = path.join(__dirname, 'dictionary.txt');
 var writeStream = fs.createWriteStream(dictionaryFilePath);
 
 
@@ -21,7 +21,7 @@ var dictionaryTransformStream = new fwp.util.DictionaryTransformStream({
   // These are the default settings: tokenize on whitespace and a few
   // punctuation marks and look for fairly ordinary words between 6 and 14
   // characters long.
-  wordDelimiter: /\s/,
+  wordDelimiter: /[\s\.,!\?<>]+/,
   acceptanceRegExp: /^[a-z\-]{6,14}$/,
   rejectionRegExp: /-{2,}|-.*-/,
   // For a text as small as Moby Dick, little reason to manage memory by

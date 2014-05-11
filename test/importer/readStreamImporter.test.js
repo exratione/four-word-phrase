@@ -33,7 +33,7 @@ describe('DictionaryTransformStream', function () {
   it('import dictionary', function (done) {
     readStreamImporter.import({
       readStream: readStream,
-      wordDelimiter: /[\s\.,!\?]+/,
+      wordDelimiter: /[\s\.,!\?<>]+/,
       acceptanceRegExp: /^[a-z\-]{6,14}$/,
       rejectionRegExp: /-{2,}|-.*-/,
       duplicateCacheSize: Infinity

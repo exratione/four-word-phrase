@@ -25,7 +25,7 @@ var generator = new fwp.generator.MemoryGenerator({
   baseSeed: 'a random seed'
 });
 
-var filePath ='path/to/four-word-phrase/example/mobyDick.txt';
+var filePath ='path/to/four-word-phrase/example/mobyDick/mobyDick.txt';
 var readStream = fs.createReadStream(filePath);
 var importer = new fwp.importer.ReadStreamImporter(generator);
 

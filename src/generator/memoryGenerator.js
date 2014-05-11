@@ -21,6 +21,7 @@ function MemoryGenerator(options) {
   MemoryGenerator.super_.call(this, options);
 
   this.dictionary = [];
+  this.dictionaryObj = {};
 
   // Count of number of phrases obtained. Defaults to 0.
   this.count = 0;
@@ -35,10 +36,18 @@ util.inherits(MemoryGenerator, Generator);
  * @see Generator.appendWordsToDictionary
  */
 MemoryGenerator.prototype.appendWordsToDictionary = function (words, callback) {
+  var self = this;
+  if (!words) {
+    return callback();
+  }
   if (!_.isArray(words)) {
     words = [words];
   }
-  this.dictionary = _.union(this.dictionary, words);
+  _.each(words, function (word) {
+    self.dictionaryObj[word] = true;
+  });
+  this.dictionary = _.keys(this.dictionaryObj).sort();
+
   callback();
 };
 

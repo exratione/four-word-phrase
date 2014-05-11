@@ -29,7 +29,7 @@ var lruCache = require('lru-cache');
  *   // or streamed text with line breaks between words.
  *   //objectMode: false,
  *   // For tokenizing the stream of words.
- *   wordDelimiter: /[\s\.,!\?]+/,
+ *   wordDelimiter: /[\s\.,!\?<>]+/,
  *   // All words failing this regular expression are rejected. Use it to
  *   // control acceptable length and characters. The word is lowercased
  *   // before matching.
@@ -55,7 +55,7 @@ function DictionaryTransformStream(options) {
 
   this.objectMode = options.objectMode;
   // Set up the specifics for splitting up the input and removing duplicates.
-  this.wordDelimiter = options.wordDelimiter || /[\s\.,!\?]+/;
+  this.wordDelimiter = options.wordDelimiter || /[\s\.,!\?<>]+/;
   this.acceptanceRegExp = options.acceptanceRegExp || /^[a-z\-]{6,14}$/;
   this.rejectionRegExp = options.rejectionRegExp || /-{2,}|-.*-/;
   this.duplicateCacheSize = options.duplicateCacheSize || Infinity;
@@ -112,19 +112,16 @@ DictionaryTransformStream.prototype._flush = function () {
  * @param {string} word
  */
 DictionaryTransformStream.prototype.pushWord = function (word) {
-  if (
-    word &&
-    !this.cache.get(word) &&
-    this.acceptanceRegExp.test(word) &&
-    !this.rejectionRegExp.test(word)
-  ) {
+  if (word && !this.cache.get(word)) {
     this.cache.set(word, true);
-    // If not in object mode we're streaming out a line-break delimited list
-    // of words.
-    if (!this.objectMode) {
-      word = word + '\n';
+    if(this.acceptanceRegExp.test(word) && !this.rejectionRegExp.test(word)) {
+      // If not in object mode we're streaming out a line-break delimited list
+      // of words.
+      if (!this.objectMode) {
+        word = word + '\n';
+      }
+      this.push(word);
     }
-    this.push(word);
   }
 };
 

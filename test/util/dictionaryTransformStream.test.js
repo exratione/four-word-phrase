@@ -17,7 +17,7 @@ describe('DictionaryTransformStream', function () {
   var dictionary;
 
   var objectModeOptions = {
-    wordDelimiter: /[\s\.,!\?]+/,
+    wordDelimiter: /[\s\.,!\?<>]+/,
     acceptanceRegExp: /^[a-z\-]{6,14}$/,
     rejectionRegExp: /-{2,}|-.*-/,
     duplicateCacheSize: Infinity
@@ -56,7 +56,7 @@ describe('DictionaryTransformStream', function () {
       });
 
       dictionaryTransformStream.on('finish', function () {
-        expect(dictionary).to.deep.equal(expectedDictionaryArray);
+        expect(dictionary.sort()).to.deep.equal(expectedDictionaryArray);
         done();
       });
     });
@@ -65,8 +65,9 @@ describe('DictionaryTransformStream', function () {
       dictionaryTransformStream.on('data', function (word) {
         dictionary.push(word);
       });
+
       dictionaryTransformStream.on('finish', function () {
-        expect(dictionary).to.deep.equal(expectedDictionaryArray);
+        expect(dictionary.sort()).to.deep.equal(expectedDictionaryArray);
         done();
       });
     });
@@ -97,7 +98,8 @@ describe('DictionaryTransformStream', function () {
       });
 
       dictionaryTransformStream.on('finish', function () {
-        expect(dictionary).to.equal(expectedDictionary);
+        dictionary = dictionary.trim().split('\n');
+        expect(dictionary.sort()).to.deep.equal(expectedDictionaryArray);
         done();
       });
     });
@@ -106,8 +108,10 @@ describe('DictionaryTransformStream', function () {
       dictionaryTransformStream.on('data', function (word) {
         dictionary = dictionary += word;
       });
+
       dictionaryTransformStream.on('finish', function () {
-        expect(dictionary).to.equal(expectedDictionary);
+        dictionary = dictionary.trim().split('\n');
+        expect(dictionary.sort()).to.deep.equal(expectedDictionaryArray);
         done();
       });
     });
