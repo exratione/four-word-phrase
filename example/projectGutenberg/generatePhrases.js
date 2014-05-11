@@ -1,7 +1,7 @@
 /**
  * @fileOverview
- * Generate pseudo-random word sequences using Moby Dick as the source for the
- * dictionary.
+ * Generate pseudo-random word sequences using the text files of Project
+ * Gutenberg as the source for the dictionary.
  */
 
 var async = require('async');
@@ -11,7 +11,8 @@ var MemoryGenerator = require('../../src/generator/memoryGenerator');
 var ReadStreamImporter = require('../../src/importer/readStreamImporter');
 
 /**
- * Generate phrases from the Moby Dick Dictionary.
+ * Generate phrases from the dictionary created from the Project Gutenberg
+ * files.
  *
  * @param {string} seed
  *   Seed for the pseudo-random number generator.

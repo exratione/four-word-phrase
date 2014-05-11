@@ -18,7 +18,7 @@ var util = require('util');
 
 var _ = require('underscore');
 var async = require('async');
-var fwp = require('../..');
+var DictionaryTransformStream = require('../../src/util/dictionaryTransformStream');
 
 // --------------------------------------------------------------------------
 // Preliminaries.
@@ -75,7 +75,7 @@ var config = {
   ],
   // How often to write partials? Do so every X files processed. This file
   // is going to get pretty large, so don't do it too often.
-  writePartialProgressFilesEvery: 500
+  writePartialProgressFilesEvery: 100
 };
 
 // --------------------------------------------------------------------------
@@ -345,7 +345,7 @@ function processFiles (callback) {
     var novelWords = [];
 
     var readStream = fs.createReadStream(file);
-    var dictionaryTransformStream = new fwp.util.DictionaryTransformStream(config.dictionaryTransformStreamParams);
+    var dictionaryTransformStream = new DictionaryTransformStream(config.dictionaryTransformStreamParams);
 
     // ----------------------------------------------------------------------
     // Define functions.
@@ -370,6 +370,15 @@ function processFiles (callback) {
       } while (word);
     }
 
+    function logComplete() {
+      console.info(util.format(
+        'Complete in %dms : %d unique words : %d new words.',
+        Date.now() - time,
+        uniqueWordCount,
+        novelWords.length
+      ));
+    }
+
     /**
      * The stream has finished, so wrap things up for this file.
      */
@@ -377,18 +386,12 @@ function processFiles (callback) {
       readStream.unpipe();
       processedFileList[file] = true;
 
-      console.info(util.format(
-        'Complete in %dms : %d unique words : %d new words.',
-        Date.now() - time,
-        uniqueWordCount,
-        novelWords.length
-      ));
-
       // The check for non-English files that might have slipped through. Assume
       // that the first files give a decent spread of words. Thus any later file
       // that adds too high a percentage of novel words is bad.
       if (fileCount > config.checkMaximumNovelWordsAfterFileCount) {
         if (novelWords.length / uniqueWordCount > config.maximumNovelWordsFraction) {
+          logComplete();
           console.info('Novel word fraction too high. Rejecting as non-English.');
           return asyncCallback();
         }
@@ -399,6 +402,7 @@ function processFiles (callback) {
         dictionary[word] = true;
       });
 
+      logComplete();
       console.info(util.format('Dictionary now contains %d words.', _.size(dictionary)));
 
       // Are we writing out partial progress at this point?
@@ -441,23 +445,8 @@ function writeFinalDictionary(callback) {
   fs.writeFile(config.paths.dictionary, dictionaryArray.join('\n') + '\n', params, callback);
 }
 
-/**
- * Finish up after completion.
- *
- * @param {Error} error
- */
-function finish(error) {
-  if (error) {
-    console.error(error);
-    process.exit(1);
-  }
-
-  console.info('-------------------------------------------');
-  console.info(util.format('Final dictionary size: %s', _.size(dictionary)));
-}
-
 // --------------------------------------------------------------------------
-// Run the operation.
+// Running the operation.
 // --------------------------------------------------------------------------
 
 var fns = {
@@ -470,4 +459,15 @@ var fns = {
   deletePartialDictionary: deletePartialDictionary
 };
 
-async.series(fns, finish);
+module.exports = function (callback) {
+  async.series(fns, function (error) {
+    if (error) {
+      return callback(error);
+    }
+
+    console.info('-------------------------------------------');
+    console.info(util.format('Final dictionary size: %s', _.size(dictionary)));
+
+    callback();
+  });
+};
