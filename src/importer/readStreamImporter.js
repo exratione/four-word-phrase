@@ -14,8 +14,8 @@ var Importer = require('../importer');
  *
  * @see Importer.
  */
-function ReadStreamImporter(generator) {
-  ReadStreamImporter.super_.call(this, generator);
+function ReadStreamImporter(dictionary) {
+  ReadStreamImporter.super_.call(this, dictionary);
 }
 util.inherits(ReadStreamImporter, Importer);
 
@@ -70,7 +70,7 @@ ReadStreamImporter.prototype.import = function (options, callback) {
       options.readStream.unpipe(dts);
       callback(error);
     }
-    self.generator.appendWordsToDictionary(_.keys(words), callback);
+    self.dictionary.appendWords(_.keys(words), callback);
   }
 
   dts.on('data', newWord);

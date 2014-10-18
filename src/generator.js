@@ -20,10 +20,13 @@ var seedrandom = require('seedrandom');
  *   baseSeed: ''
  * }
  *
- * @param {object} options
+ * @param {Dictionary} dictionary
+ *   A Dictionary instance.
+ * @param {Object} options
  *   Configuration for this instance.
  */
-function Generator(options) {
+function Generator(dictionary, options) {
+  this.dictionary = dictionary;
   this.options = _.extend({
     baseSeed: ''
   }, options);
@@ -55,7 +58,7 @@ Generator.prototype.nextPhrase = function (phraseLength, callback) {
 
   async.series({
     getDictionaryLength: function (asyncCallback) {
-      self.getDictionaryLength(function (error, length) {
+      self.dictionary.getLength(function (error, length) {
         dictionaryLength = length;
         asyncCallback(error);
       });
@@ -73,13 +76,11 @@ Generator.prototype.nextPhrase = function (phraseLength, callback) {
       });
     },
     assemblePhrase: function (asyncCallback) {
-      var wordIndexes = [];
+      var wordIndices = [];
       for (var index = 0; index < phraseLength; index++) {
-        wordIndexes[index] = Math.floor(prngFn() * dictionaryLength);
+        wordIndices[index] = Math.floor(prngFn() * dictionaryLength);
       }
-      async.map(wordIndexes, function (dictionaryIndex, innerAsyncCallback) {
-        self.getWord(dictionaryIndex, innerAsyncCallback);
-      }, function (error, results) {
+      self.dictionary.getWordsAt(wordIndices, function (error, results) {
         words = results;
         asyncCallback(error);
       });
@@ -117,41 +118,6 @@ Generator.prototype.getPhrasePrngFunction = function (count, callback) {
 //---------------------------------------------------------------------------
 // Methods to be implemented by subclasses.
 //---------------------------------------------------------------------------
-
-/**
- * Add to the dictionary used by this generator instance.
- *
- * @param {string[]} words
- *   The words to append to the dictionary.
- * @param {Function} callback
- *   Of the form function (error).
- */
-Generator.prototype.appendWordsToDictionary = function (words, callback) {
-  callback(new Error('Not implemented'));
-};
-
-/**
- * Get a word from the dictionary by referencing a specific index in a specific
- * ordering.
- *
- * @param {number} wordIndex
- *   Index of the word in the dictionary ordering.
- * @param {Function} callback
- *   Of the form function (error, word).
- */
-Generator.prototype.getWord = function (wordIndex, callback) {
-  callback(new Error('Not implemented'));
-};
-
-/**
- * Return the length of the dictionary.
- *
- * @param {Function} callback
- *   Of the form function (error, length).
- */
-Generator.prototype.getDictionaryLength = function (callback) {
-  callback(new Error('Not implemented'));
-};
 
 /**
  * Obtain the count of the number of phrases requested.

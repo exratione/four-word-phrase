@@ -14,14 +14,10 @@ var Generator = require('../generator');
  *
  * This is suitable for testing and experimentation.
  *
- * @param {object} options
- *   Configuration for this instance.
+ * @see Generator
  */
-function MemoryGenerator(options) {
-  MemoryGenerator.super_.call(this, options);
-
-  this.dictionary = [];
-  this.dictionaryObj = {};
+function MemoryGenerator(dictionary, options) {
+  MemoryGenerator.super_.call(this, dictionary, options);
 
   // Count of number of phrases obtained. Defaults to 0.
   this.count = 0;
@@ -31,39 +27,6 @@ util.inherits(MemoryGenerator, Generator);
 //---------------------------------------------------------------------------
 // Methods.
 //---------------------------------------------------------------------------
-
-/**
- * @see Generator.appendWordsToDictionary
- */
-MemoryGenerator.prototype.appendWordsToDictionary = function (words, callback) {
-  var self = this;
-  if (!words) {
-    return callback();
-  }
-  if (!_.isArray(words)) {
-    words = [words];
-  }
-  _.each(words, function (word) {
-    self.dictionaryObj[word] = true;
-  });
-  this.dictionary = _.keys(this.dictionaryObj).sort();
-
-  callback();
-};
-
-/**
- * @see Generator#getWord
- */
-MemoryGenerator.prototype.getWord = function (wordIndex, callback) {
-  callback(null, this.dictionary[wordIndex]);
-};
-
-/**
- * @see Generator.getDictionaryLength
- */
-MemoryGenerator.prototype.getDictionaryLength = function (callback) {
-  callback(null, this.dictionary.length);
-};
 
 /**
  * @see Generator.getCount

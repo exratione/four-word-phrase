@@ -37,6 +37,11 @@ function runGutenbergDownloader(callback) {
 }
 
 module.exports = {
+  // Dictionary implementations.
+  dictionary: {
+    Dictionary: require('./src/dictionary'),
+    MemoryDictionary: require('./src/memoryDictionary')
+  },
   // Phrase generators.
   generator: {
     Generator: require('./src/generator'),

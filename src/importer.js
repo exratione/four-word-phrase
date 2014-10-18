@@ -7,12 +7,11 @@
  * @class
  * An interface class for dictionary importers.
  *
- * @param {Generator} generator
- *   A generator instance that will have the imported words added to
- *   its dictionary.
+ * @param {Dictionary} dictionary
+ *   Imported words will be added to this dictionary.
  */
-function Importer(generator) {
-  this.generator = generator;
+function Importer(dictionary) {
+  this.dictionary = dictionary;
 }
 
 //---------------------------------------------------------------------------
@@ -20,7 +19,8 @@ function Importer(generator) {
 //---------------------------------------------------------------------------
 
 /**
- * Import words from a source to the generator for this Importer instance.
+ * Import words from a source to the dictionary assigned to this Importer
+ * instance.
  *
  * @param {object} options
  *   Options for the import.

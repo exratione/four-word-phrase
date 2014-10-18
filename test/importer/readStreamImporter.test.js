@@ -7,26 +7,24 @@ var fs = require('fs');
 var path = require('path');
 var async = require('async');
 var expect = require('chai').expect;
-var MemoryGenerator = require('../../src/generator/memoryGenerator');
+var MemoryDictionary = require('../../src/dictionary/memoryDictionary');
 var ReadStreamImporter = require('../../src/importer/readStreamImporter');
 
 describe('DictionaryTransformStream', function () {
-  var generator;
+  var dictionary;
   var readStreamImporter;
   var readStream;
   var expectedDictionary;
 
   before(function () {
-    generator = new MemoryGenerator({
-      baseSeed: 'test'
-    });
+    dictionary = new MemoryDictionary();
     // The expected outcome is stashed as a file, so load it for comparison.
     var dictionaryPath = path.join(__dirname, '../text/mobyDickChapter30Dictionary.txt');
     expectedDictionary = fs.readFileSync(dictionaryPath, 'utf8').trim().split('\n');
   });
 
   beforeEach(function () {
-    readStreamImporter = new ReadStreamImporter(generator);
+    readStreamImporter = new ReadStreamImporter(dictionary);
     readStream = fs.createReadStream(path.join(__dirname, '../text/mobyDickChapter30.txt'));
   });
 
@@ -41,24 +39,19 @@ describe('DictionaryTransformStream', function () {
   });
 
   it('dictionary length is as expected', function (done) {
-    generator.getDictionaryLength(function (error, length) {
+    dictionary.getLength(function (error, length) {
       expect(length).to.equal(expectedDictionary.length);
       done(error);
     });
   });
 
   it('dictionary contents are as expected', function (done) {
-    var indexes = expectedDictionary.map(function (word, index) {
+    var indices = expectedDictionary.map(function (word, index) {
       return index;
     });
     var words = [];
 
-    async.map(indexes, function (index, asyncCallback) {
-      generator.getWord(index, function (error, word) {
-        words[index] = word;
-        asyncCallback(error);
-      });
-    }, function (error) {
+    dictionary.getWordsAt(indices, function (error, words) {
       expect(words).to.deep.equal(expectedDictionary);
       done(error);
     });

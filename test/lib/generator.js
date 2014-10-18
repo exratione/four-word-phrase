@@ -9,6 +9,9 @@ var expect = require('chai').expect;
 /**
  * Run tests on the given generator instance.
  *
+ * This expects the generator to have been provided with a dictionary that has
+ * been run through the dictionary tests to populate it.
+ *
  * @param {string} description
  *   Description for the test.
  * @param {Generator} generator
@@ -70,64 +73,6 @@ module.exports = function (description, generator) {
           expect(resultsA).to.deep.equal(resultsB);
           expect(resultsA).to.not.deep.equal(resultsC);
           done();
-        });
-      });
-
-    });
-
-    //----------------------------------------------------------------------
-    // Add a few words, check the dictionary length.
-    //----------------------------------------------------------------------
-
-    describe('adding and getting words', function () {
-      var words = ['word-1', 'word-2', 'word-3'];
-
-      it('dictionary length for empty dictionary', function (done) {
-        generator.getDictionaryLength(function (error, length) {
-          expect(length).to.equal(0);
-          done(error);
-        });
-      });
-
-      it('add a word to the dictionary', function (done) {
-        generator.appendWordsToDictionary(words[0], done);
-      });
-
-      it('dictionary length increments', function (done) {
-        generator.getDictionaryLength(function (error, length) {
-          expect(length).to.equal(1);
-          done(error);
-        });
-      });
-
-      it('add a duplicate word to the dictionary', function (done) {
-        generator.appendWordsToDictionary(words[0], done);
-      });
-
-      it('dictionary length remains the same', function (done) {
-        generator.getDictionaryLength(function (error, length) {
-          expect(length).to.equal(1);
-          done(error);
-        });
-      });
-
-      it('add an array of two words to the dictionary', function (done) {
-        generator.appendWordsToDictionary(words.slice(1), done);
-      });
-
-      it('dictionary length increments by two', function (done) {
-        generator.getDictionaryLength(function (error, length) {
-          expect(length).to.equal(3);
-          done(error);
-        });
-      });
-
-      it('get added words', function (done) {
-        async.map([0, 1, 2], function (index, asyncCallback) {
-          generator.getWord(index, asyncCallback);
-        }, function (error, results) {
-          expect(results).to.deep.eql(words);
-          done(error);
         });
       });
 

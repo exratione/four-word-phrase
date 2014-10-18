@@ -121,6 +121,29 @@ language as a whole may have ~1,000,000 words, but far from all of those are
 useful for this purpose. Sequences of short words are no easier to remember, but
 are less secure as they can be more readily brute-forced.
 
+## Creating a New Dictionary Implementation
+
+To create a Dictionary with a different storage backend, subclass the base
+`Dictionary` class and implement its undefined methods.
+
+```
+var util = require('util');
+var Dictionary = require('four-word-phrase').dictionary.Dictionary
+
+var MyDictionary = function (options) {
+  MyDictionary.super_.call(this, options);
+
+  // Setup here.
+
+}
+util.inherits(MyDictionary, Dictionary);
+
+// Implement the necessary methods. e.g:
+MyDictionary.prototype.appendWords = function (words, callback) {
+  // ...
+};
+```
+
 ## Creating a New Generator Implementation
 
 To create a Generator with a different storage backend, subclass the base
@@ -130,8 +153,8 @@ To create a Generator with a different storage backend, subclass the base
 var util = require('util');
 var Generator = require('four-word-phrase').generator.Generator
 
-var MyGenerator = function (options) {
-  MyGenerator.super_.call(this, options);
+var MyGenerator = function (dictionary, options) {
+  MyGenerator.super_.call(this, dictionary, options);
 
   // Setup here.
 
@@ -139,7 +162,7 @@ var MyGenerator = function (options) {
 util.inherits(MyGenerator, Generator);
 
 // Implement the necessary methods. e.g:
-MyGenerator.prototype.appendWordsToDictionary = function (words, callback) {
+MyGenerator.prototype.getCount = function (callback) {
   // ...
 };
 ```

@@ -7,6 +7,7 @@
 var async = require('async');
 var fs = require('fs');
 var path = require('path');
+var MemoryDictionary = require('../../src/dictionary/memoryDictionary');
 var MemoryGenerator = require('../../src/generator/memoryGenerator');
 var ReadStreamImporter = require('../../src/importer/readStreamImporter');
 
@@ -21,14 +22,14 @@ var ReadStreamImporter = require('../../src/importer/readStreamImporter');
  *   Of the form function (error, string[]).
  */
 module.exports = function (seed, phraseLength, callback) {
-
-  var generator = new MemoryGenerator({
+  var dictionary = new MemoryDictionary();
+  var generator = new MemoryGenerator(dictionary, {
     baseSeed: seed
   });
 
   var filePath = path.join(__dirname, 'dictionary.txt');
   var readStream = fs.createReadStream(filePath);
-  var importer = new ReadStreamImporter(generator);
+  var importer = new ReadStreamImporter(dictionary);
 
   importer.import({
     readStream: readStream
@@ -47,5 +48,4 @@ module.exports = function (seed, phraseLength, callback) {
       callback(null, phrases);
     });
   });
-
 };
